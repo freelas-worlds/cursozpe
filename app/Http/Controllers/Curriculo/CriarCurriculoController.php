@@ -23,7 +23,7 @@ class CriarCurriculoController extends Controller
                 'first_name',
                 'last_name',
                 'email',
-                'confirmado'
+                'confirmado o show'
             ]));
 
             return response()->json($curriculo, 201);

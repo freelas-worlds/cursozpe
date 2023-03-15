@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Curriculo;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Curriculo\CriarCurriculoRequest;
+use App\Http\Requests\Curriculo\EditarCurriculoRequest;
 use App\Models\Curriculo\Curriculo;
 use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
-class CriarCurriculoController extends Controller
+class EditarCurriculoController extends Controller
 {
     private $curriculo;
 
@@ -18,17 +16,18 @@ class CriarCurriculoController extends Controller
         $this->curriculo = $curriculo;
     }
 
-    public function __invoke(CriarCurriculoRequest $request)
+    public function __invoke(EditarCurriculoRequest $request, $id = null)
     {
         try {
-            $curriculo = $this->curriculo->create($request->only([
+            $curriculo = $this->curriculo->findOrFail($id ?? $request->id);
+            $curriculo->update($request->only([
                 'first_name',
                 'last_name',
                 'email',
                 'confirmado'
             ]));
 
-            return response()->json($curriculo, 201);
+            return response()->json($curriculo, 200);
         } catch (Exception $e) {
             return response()->json($e->getMessage());
         }
